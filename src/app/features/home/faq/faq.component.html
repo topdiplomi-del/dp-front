@@ -1,0 +1,57 @@
+<p class="section-label animate-in">часті запитання</p>
+<h2 class="section-title animate-in">Відповіді на ваші питання</h2>
+
+<div class="faq-list">
+  <!-- ITEM 1 -->
+  <div class="faq-item animate-in delay-1" [class.open]="openIndex === 0">
+    <button type="button" class="faq-question" (click)="toggleFaq(0)">
+      <span>Чим відрізняється бакалавр від магістра?</span>
+
+      <div class="faq-toggle">
+        {{ openIndex === 0 ? '−' : '+' }}
+      </div>
+    </button>
+
+    <div class="faq-answer">
+      <div class="faq-answer-inner">
+        Бакалавр — це перший ступінь вищої освіти (4 роки навчання). Магістр — другий ступінь (1–1,5
+        роки після бакалавра). Магістр дає більш глибоку спеціалізацію.
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEM 2 -->
+  <div class="faq-item animate-in delay-2" [class.open]="openIndex === 1">
+    <button type="button" class="faq-question" (click)="toggleFaq(1)">
+      <span>Не знаю на кого поступати?</span>
+
+      <div class="faq-toggle">
+        {{ openIndex === 1 ? '−' : '+' }}
+      </div>
+    </button>
+
+    <div class="faq-answer">
+      <div class="faq-answer-inner">
+        Не хвилюйтесь! Наші куратори допоможуть підібрати спеціальність відповідно до ваших
+        інтересів.
+      </div>
+    </div>
+  </div>
+
+  <!-- ITEM 3 -->
+  <div class="faq-item animate-in delay-3" [class.open]="openIndex === 2">
+    <button type="button" class="faq-question" (click)="toggleFaq(2)">
+      <span>Що робити якщо мені сподобалась освітня програма?</span>
+
+      <div class="faq-toggle">
+        {{ openIndex === 2 ? '−' : '+' }}
+      </div>
+    </button>
+
+    <div class="faq-answer">
+      <div class="faq-answer-inner">
+        Натисніть кнопку “Детальніше” та подайте заяву через вступну кампанію.
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,332 @@
+<!-- Scroll progress bar -->
+<div class="progress-bar" [style.width.%]="scrollProgress"></div>
+
+<app-header></app-header>
+
+<!-- ════════════════════════════════════════
+     LOADING
+════════════════════════════════════════ -->
+<div class="page-loading" *ngIf="loading">
+  <div class="spinner-wrap">
+    <div class="spinner-ring"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     ERROR
+════════════════════════════════════════ -->
+<div class="page-error" *ngIf="!loading && error">
+  <div class="container">
+    <div class="error-icon">
+      <svg
+        width="40"
+        height="40"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v4M12 16h.01" stroke-linecap="round" />
+      </svg>
+    </div>
+    <div class="error-title">{{ error }}</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════ -->
+<ng-container *ngIf="!loading && !error && institute">
+  <!-- Hero -->
+  <div class="dept-hero" [style.--dept-color]="institute.color ?? '#c0392b'">
+    <div class="container">
+      <div class="dept-num">{{ institute.short_name ?? 'Інститут' }}</div>
+      <div class="dept-name">{{ institute.name }}</div>
+    </div>
+  </div>
+
+  <!-- Video -->
+  <div class="container" *ngIf="mainVideoUrl">
+    <div class="video-block">
+      <div class="video-thumb">
+        <iframe
+          class="video-iframe"
+          [src]="mainVideoUrl"
+          frameborder="0"
+          allowfullscreen
+          allow="
+            accelerometer;
+            autoplay;
+            clipboard-write;
+            encrypted-media;
+            gyroscope;
+            picture-in-picture;
+          "
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="container" *ngIf="institute.description">
+    <div class="institute-desc">{{ institute.description }}</div>
+  </div>
+
+  <!-- ── Programs ── -->
+  <div class="container">
+    <div class="section-wrap">
+      <!-- Specialties loading skeleton -->
+      <ng-container *ngIf="specialtiesLoading">
+        <div class="dept-section skeleton-section" *ngFor="let i of [1, 2, 3]">
+          <div class="dept-section-header">
+            <span class="skeleton-pill"></span>
+            <span class="skeleton-line-sm"></span>
+          </div>
+          <div class="programs-list">
+            <div class="skeleton-btn" *ngFor="let j of [1, 2]"></div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Tree data -->
+      <ng-container *ngIf="!specialtiesLoading">
+        <div
+          class="dept-section"
+          *ngFor="let node of treeData; trackBy: trackById"
+          [attr.data-field-id]="node.field.id"
+        >
+          <div class="dept-section-header">
+            <span class="dept-code">{{ node.field.code }}</span>
+            <span class="dept-section-title">{{ node.field.name | lowercase }}</span>
+          </div>
+          <div class="programs-list">
+            <ng-container *ngIf="node.specialties.length; else noSpecialties">
+              <a
+                class="program-btn"
+                *ngFor="let s of node.specialties; trackBy: trackById"
+                [class.active]="activeSpecialty?.id === s.id"
+                href="/speciality/{{ s.id }}"
+              >
+                <div class="program-btn-left">
+                  <div class="program-degree">{{ degreeLabel(s.degree) }}</div>
+                  <div class="program-name">{{ s.name }}</div>
+                </div>
+                <div class="program-arrow">
+                  <svg
+                    width="13"
+                    height="13"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path
+                      d="M5 12h14M12 5l7 7-7 7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </ng-container>
+            <ng-template #noSpecialties>
+              <div class="programs-empty-small">Спеціальностей поки немає</div>
+            </ng-template>
+          </div>
+        </div>
+
+        <div *ngIf="!treeData.length" class="programs-empty">Спеціальностей поки немає</div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- ── Partner companies ── -->
+  <div class="container companies-section" *ngIf="companies.length">
+    <div class="companies-title">Роботодавці-партнери</div>
+    <div class="companies-logos">
+      <a
+        *ngFor="let c of companies; trackBy: trackById"
+        [href]="c.website_url ?? '#'"
+        [target]="c.website_url ? '_blank' : '_self'"
+        class="company-logo-wrap"
+        [title]="c.name"
+        rel="noopener noreferrer"
+      >
+        <img
+          *ngIf="c.logo_url"
+          [src]="c.logo_url"
+          [alt]="c.name"
+          class="company-logo-img"
+          loading="lazy"
+        />
+        <span *ngIf="!c.logo_url" class="company-logo-text">{{ c.name }}</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Photo gallery ── -->
+  <div class="container gallery-section" *ngIf="photos.length">
+    <div class="gallery-title">Фотогалерея</div>
+    <div class="gallery-grid">
+      <div class="gallery-item" *ngFor="let p of photos; trackBy: trackById">
+        <img [src]="p.url" [alt]="p.caption ?? ''" loading="lazy" />
+        <div class="gallery-caption" *ngIf="p.caption">{{ p.caption }}</div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<app-footer></app-footer>
+
+<!-- ════════════════════════════════════════
+     SPECIALTY DETAIL OVERLAY
+════════════════════════════════════════ -->
+<div
+  class="spec-overlay"
+  [class.active]="!!activeSpecialty"
+  (click)="$event.target === $event.currentTarget && closeSpecialty()"
+  role="dialog"
+  aria-modal="true"
+>
+  <div class="spec-panel" *ngIf="activeSpecialty">
+    <!-- Panel header -->
+    <div class="spec-panel-head">
+      <div class="spec-panel-head-info">
+        <div class="spec-panel-degree">{{ degreeLabel(activeSpecialty.degree) }}</div>
+        <div class="spec-panel-name">{{ activeSpecialty.name }}</div>
+      </div>
+      <button class="spec-close" (click)="closeSpecialty()" aria-label="Закрити">
+        <svg
+          width="16"
+          height="16"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Loading skeleton -->
+    <div class="spec-loading" *ngIf="specialtyLoading">
+      <div class="skeleton-line w80"></div>
+      <div class="skeleton-line w60"></div>
+      <div class="skeleton-line w90"></div>
+      <div class="skeleton-line w70"></div>
+    </div>
+
+    <!-- Panel body -->
+    <div class="spec-panel-body" *ngIf="!specialtyLoading">
+      <!-- Stats row -->
+      <div
+        class="spec-stats"
+        *ngIf="
+          activeSpecialty.graduates_count ||
+          activeSpecialty.employment_rate ||
+          activeSpecialty.employers_count ||
+          activeSpecialty.study_years
+        "
+      >
+        <div class="spec-stat" *ngIf="activeSpecialty.graduates_count">
+          <div class="spec-stat-num">{{ formatGraduates(activeSpecialty.graduates_count) }}</div>
+          <div class="spec-stat-label">випускників</div>
+        </div>
+        <div class="spec-stat" *ngIf="activeSpecialty.employment_rate">
+          <div class="spec-stat-num">{{ activeSpecialty.employment_rate }}%</div>
+          <div class="spec-stat-label">працевлаштування</div>
+        </div>
+        <div class="spec-stat" *ngIf="activeSpecialty.employers_count">
+          <div class="spec-stat-num">{{ activeSpecialty.employers_count }}+</div>
+          <div class="spec-stat-label">роботодавців</div>
+        </div>
+        <div class="spec-stat" *ngIf="activeSpecialty.study_years">
+          <div class="spec-stat-num">{{ activeSpecialty.study_years }}</div>
+          <div class="spec-stat-label">роки навчання</div>
+        </div>
+      </div>
+
+      <!-- Study forms -->
+      <div class="spec-forms" *ngIf="activeSpecialty.has_budget || activeSpecialty.has_contract">
+        <span class="form-chip budget" *ngIf="activeSpecialty.has_budget">💰 Бюджет</span>
+        <span class="form-chip contract" *ngIf="activeSpecialty.has_contract">📋 Контракт</span>
+      </div>
+
+      <!-- Description -->
+      <p class="spec-desc" *ngIf="activeSpecialty.description">
+        {{ activeSpecialty.description }}
+      </p>
+
+      <!-- Program highlight -->
+      <div class="spec-highlight" *ngIf="activeSpecialty.program_description">
+        <div class="spec-highlight-text">{{ activeSpecialty.program_description }}</div>
+      </div>
+
+      <!-- Disciplines -->
+      <ng-container *ngIf="activeSpecialty.disciplines?.length">
+        <div class="spec-section-title">Що будеш вивчати</div>
+
+        <div
+          class="disciplines-group"
+          *ngIf="getDisciplinesByType(activeSpecialty, 'fundamental').length"
+        >
+          <div class="disciplines-group-label">Фундаментальні</div>
+          <div class="tags-row">
+            <span
+              class="tag"
+              *ngFor="let d of getDisciplinesByType(activeSpecialty, 'fundamental')"
+            >
+              {{ d.name }}
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="disciplines-group"
+          *ngIf="getDisciplinesByType(activeSpecialty, 'profile').length"
+        >
+          <div class="disciplines-group-label">Профільні</div>
+          <div class="tags-row">
+            <span class="tag" *ngFor="let d of getDisciplinesByType(activeSpecialty, 'profile')">
+              {{ d.name }}
+            </span>
+          </div>
+        </div>
+
+        <div
+          class="disciplines-group"
+          *ngIf="getDisciplinesByType(activeSpecialty, 'specialty').length"
+        >
+          <div class="disciplines-group-label">Спеціалізація та практика</div>
+          <div class="tags-row">
+            <span
+              class="tag tag-specialty"
+              *ngFor="let d of getDisciplinesByType(activeSpecialty, 'specialty')"
+            >
+              {{ d.name }}
+            </span>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Career roles -->
+      <ng-container *ngIf="activeSpecialty.career_roles?.length">
+        <div class="spec-section-title">Ким ти можеш стати</div>
+        <div class="roles-list">
+          <div class="role-card" *ngFor="let role of activeSpecialty.career_roles; let i = index">
+            <div class="role-num">{{ (i + 1).toString().padStart(2, '0') }}</div>
+            <div class="role-info">
+              <div class="role-title">{{ role.title }}</div>
+              <div class="role-desc" *ngIf="role.description">{{ role.description }}</div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <!-- /spec-panel-body -->
+  </div>
+  <!-- /spec-panel -->
+</div>
+<!-- /spec-overlay -->

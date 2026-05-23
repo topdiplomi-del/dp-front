@@ -1,0 +1,268 @@
+<div class="progress-bar" [style.width.%]="scrollProgress"></div>
+
+<!-- Header -->
+<app-header />
+
+<!-- ══ SKELETON / ERROR ══ -->
+<ng-container *ngIf="loading">
+  <div class="container">
+    <div class="skeleton-hero">
+      <div class="skel skel-title"></div>
+      <div class="skel skel-subtitle"></div>
+      <div class="skel skel-meta"></div>
+    </div>
+    <div class="skeleton-blocks">
+      <div class="skel skel-block" *ngFor="let i of [1, 2, 3]"></div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!loading && error">
+  <div class="container">
+    <div class="error-state">
+      <div class="error-ico">⚠️</div>
+      <div class="error-title">Спеціальність не знайдено</div>
+      <div class="error-desc">Перевірте посилання або поверніться назад</div>
+      <a class="cta-btn" href="javascript:history.back()">← Назад</a>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!loading && !error && specialty">
+  <!-- Breadcrumb -->
+  <div class="container">
+    <div class="breadcrumb">
+      <a class="bc-item" href="/">Головна</a>
+      <span class="bc-sep">›</span>
+      <span class="bc-item bc-field">
+        {{ specialty.knowledge_field_code }} {{ specialty.knowledge_field_name }}
+      </span>
+      <span class="bc-sep">›</span>
+      <span class="bc-current">{{ degreeLabel }} · {{ specialty.name }}</span>
+    </div>
+  </div>
+
+  <!-- Program Hero -->
+  <div class="container">
+    <div class="program-hero">
+      <div class="hero-top" [style.background-color]="'var(--green-dark)'">
+        <div class="hero-dept-row">
+          <span class="hero-code">{{ specialty.knowledge_field_code }}</span>
+          <span class="hero-dept-name">{{ specialty.knowledge_field_name }}</span>
+        </div>
+        <div class="hero-degree">
+          {{ degreeLabel }} · {{ studyYearsLabel }}
+          {{ specialty.study_years === 1 ? 'рік' : 'роки' }}
+        </div>
+        <div class="hero-program-name">{{ specialty.name }}</div>
+      </div>
+
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-val">{{ studyYearsLabel }}</div>
+          <div class="meta-lbl">
+            {{ specialty.study_years === 1 ? 'рік навчання' : 'роки навчання' }}
+          </div>
+        </div>
+        <div class="meta-item" *ngIf="specialty.graduates_count">
+          <div class="meta-val">{{ graduatesFormatted }}</div>
+          <div class="meta-lbl">випускників</div>
+        </div>
+        <div class="meta-item" *ngIf="specialty.employment_rate">
+          <div class="meta-val">{{ specialty.employment_rate }}%</div>
+          <div class="meta-lbl">працевлаштування</div>
+        </div>
+        <div class="meta-item" *ngIf="specialty.employers_count">
+          <div class="meta-val">{{ specialty.employers_count }}</div>
+          <div class="meta-lbl">роботодавців</div>
+        </div>
+      </div>
+
+      <div class="hero-tags">
+        <span class="tag" *ngIf="specialty.has_budget">Є бюджет</span>
+        <span class="tag" *ngIf="specialty.has_contract">Контракт</span>
+        <span class="tag" *ngIf="specialty.erasmus?.is_active">Erasmus+</span>
+        <span class="tag tag-degree">{{ degreeLabel }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content blocks -->
+  <div class="container">
+    <div class="content">
+      <!-- About -->
+      <div class="block" *ngIf="specialty.description || specialty.program_description">
+        <div class="block-header">
+          <div class="block-icon">
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+          </div>
+          <div class="block-title">Про що ця програма?</div>
+        </div>
+        <div class="block-body">
+          <p class="about-text" *ngIf="specialty.description">{{ specialty.description }}</p>
+          <div class="highlight-box" *ngIf="specialty.program_description">
+            {{ specialty.program_description }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Career roles -->
+      <div class="block" *ngIf="specialty.career_roles?.length">
+        <div class="block-header">
+          <div class="block-icon">
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+            </svg>
+          </div>
+          <div class="block-title">Ким ти можеш стати?</div>
+        </div>
+        <div class="block-body">
+          <div class="careers-list">
+            <div class="career-item" *ngFor="let role of specialty.career_roles; let i = index">
+              <div class="career-num">{{ (i + 1).toString().padStart(2, '0') }}</div>
+              <div class="career-role">{{ role.title }}</div>
+              <div class="career-desc" *ngIf="role.description">{{ role.description }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disciplines / Subjects -->
+      <div class="block" *ngIf="specialty.disciplines?.length">
+        <div class="block-header">
+          <div class="block-icon">
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+          </div>
+          <div class="block-title">Що будеш вивчати?</div>
+        </div>
+        <div class="block-body">
+          <div class="subjects-wrap">
+            <!-- Fundamental -->
+            <ng-container *ngIf="fundamentalDisciplines.length">
+              <div class="semester-label">Фундаментальні дисципліни</div>
+              <div class="chips">
+                <span class="chip core" *ngFor="let d of fundamentalDisciplines">{{ d.name }}</span>
+              </div>
+            </ng-container>
+            <!-- Profile -->
+            <ng-container *ngIf="profileDisciplines.length">
+              <div class="semester-label">Профільні дисципліни</div>
+              <div class="chips">
+                <span class="chip core" *ngFor="let d of profileDisciplines">{{ d.name }}</span>
+              </div>
+            </ng-container>
+            <!-- Specialty/Practice -->
+            <ng-container *ngIf="specialtyDisciplines.length">
+              <div class="semester-label">Спеціалізація та практика</div>
+              <div class="chips">
+                <span class="chip" *ngFor="let d of specialtyDisciplines">{{ d.name }}</span>
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- Erasmus block -->
+          <div class="erasmus-block" *ngIf="specialty.erasmus?.is_active" style="margin-top: 18px">
+            <div class="erasmus-text">
+              <div class="erasmus-title">
+                {{ specialty.erasmus?.title ?? 'Erasmus+ Стажування' }}
+              </div>
+              <div class="erasmus-desc">
+                {{
+                  specialty.erasmus?.description ??
+                    'Прямий доступ до лідерів галузі та міжнародних стажувань за стандартами Erasmus+'
+                }}
+              </div>
+            </div>
+            <div class="erasmus-badge" *ngIf="specialty.erasmus?.duration_months">
+              До {{ specialty.erasmus?.duration_months }} міс
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employers -->
+      <div class="block" *ngIf="companies.length">
+        <div class="block-header">
+          <div class="block-icon">
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+          </div>
+          <div class="block-title">Де працюють наші випускники?</div>
+        </div>
+        <div class="block-body">
+          <div class="employers-grid">
+            <a
+              class="employer-card"
+              *ngFor="let c of companies"
+              [href]="c.website_url ?? '#'"
+              [target]="c.website_url ? '_blank' : '_self'"
+              [rel]="c.website_url ? 'noopener noreferrer' : ''"
+            >
+              <img *ngIf="c.logo_url" [src]="c.logo_url" [alt]="c.name" class="employer-logo-img" />
+              <div *ngIf="!c.logo_url" class="employer-logo employer-logo-fallback">
+                {{ c.name.slice(0, 4).toUpperCase() }}
+              </div>
+              <div class="employer-name">{{ c.name }}</div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="container">
+    <div style="padding: 0 16px 0">
+      <div class="cta-block">
+        <div class="cta-title">Готовий до вступу?</div>
+        <div class="cta-desc">
+          Подай заяву на програму «{{ specialty.name }}» і розпочни шлях до міжнародної кар'єри
+        </div>
+        <a class="cta-btn" href="https://pk.ontu.edu.ua/" target="_blank" rel="noopener"
+          >дізнатися деталі →</a
+        >
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Footer -->
+<app-footer />

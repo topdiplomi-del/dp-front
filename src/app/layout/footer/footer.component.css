@@ -1,0 +1,59 @@
+/* ─── FOOTER ─── */
+.footer {
+  background: var(--green-dark);
+  padding: 20px 24px;
+  margin-top: 50px;
+}
+
+.footer__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.footer-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.footer-btn.accent {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--green-dark);
+}
+
+.footer-btn.accent:hover {
+  background: var(--gold-light);
+}
+
+.footer-logo-sm {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.1em;
+}

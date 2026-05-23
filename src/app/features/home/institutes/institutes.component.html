@@ -1,0 +1,48 @@
+<!-- Loading state -->
+<div class="institutes-loading" *ngIf="loading">
+  <div class="loading-spinner"></div>
+</div>
+
+<!-- Error state -->
+<div class="institutes-error" *ngIf="error && !loading">
+  <p>{{ error }}</p>
+</div>
+
+<!-- Institutes grid -->
+<section class="institutes-grid" *ngIf="!loading && !error">
+  <a
+    *ngFor="let inst of institutes; let i = index"
+    class="institute-card animate-in"
+    [style.animation-delay]="i * 0.07 + 's'"
+    [routerLink]="['/department', inst.id]"
+    [style.background]="inst.color || '#1a4a2e'"
+  >
+    <div class="institute-content">
+      <div class="institute-number">
+        {{ getNumber(i) }}
+      </div>
+      <div class="institute-name">
+        {{ inst.name }}
+      </div>
+    </div>
+    <div class="institute-arrow">
+      <svg
+        class="arrow-svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </div>
+  </a>
+
+  <!-- Empty state -->
+  <div
+    *ngIf="institutes.length === 0"
+    style="grid-column: 1/-1; text-align: center; padding: 48px; opacity: 0.5"
+  >
+    Інститутів не знайдено
+  </div>
+</section>

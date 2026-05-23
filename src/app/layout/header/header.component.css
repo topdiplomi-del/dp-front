@@ -1,0 +1,107 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--green-dark);
+  padding: 16px 24px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+}
+
+.header__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.logo-emblem {
+  width: 40px;
+  height: 40px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Unbounded', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green-dark);
+  flex-shrink: 0;
+  letter-spacing: -0.5px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.logo-subtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 1px;
+}
+
+.header-badge {
+  background: var(--gold);
+  color: var(--green-dark);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 100px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.header-search {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  padding: 6px 14px;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.header-search:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.header-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: 'Geologica', sans-serif;
+  font-size: 13px;
+  width: 220px;
+}
+
+.header-search input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}

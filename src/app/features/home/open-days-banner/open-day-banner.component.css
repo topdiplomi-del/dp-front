@@ -1,0 +1,99 @@
+/* ─── OPEN DAYS BANNER ─── */
+.open-days-banner {
+  margin-top: 48px;
+  background: var(--green-dark);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.open-days-banner::before {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.banner-content {
+  flex: 1;
+}
+
+.banner-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--gold);
+  color: var(--green-dark);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 100px;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+.banner-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--green-dark);
+  border-radius: 50%;
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.banner-title {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.banner-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+}
+
+.banner-cta {
+  background: var(--gold);
+  color: var(--green-dark);
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 14px 24px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.banner-cta:hover {
+  background: var(--gold-light);
+  transform: scale(1.04);
+}

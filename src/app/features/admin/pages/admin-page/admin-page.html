@@ -1,0 +1,1654 @@
+<!-- ═══ SIDEBAR ═══ -->
+<div class="page-flex">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-label">НУХТ · Адмінпанель</div>
+      <div class="sidebar-logo-name">Управління сайтом</div>
+      <div class="sidebar-logo-sub">Профінститут</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Загальне</div>
+      <div
+        class="nav-item"
+        [class.active]="activePage === 'dashboard'"
+        (click)="switchPage('dashboard')"
+      >
+        <div class="nav-ico">
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          </svg>
+        </div>
+        <span class="nav-label">Дашборд</span>
+      </div>
+
+      <div class="nav-section-label">Структура</div>
+      <div
+        class="nav-item"
+        [class.active]="activePage === 'institutes'"
+        (click)="switchPage('institutes')"
+      >
+        <div class="nav-ico">
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <path
+              d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M6 21V6a2 2 0 012-2h8a2 2 0 012 2v15"
+            />
+          </svg>
+        </div>
+        <span class="nav-label">Інститути</span>
+        <span class="nav-badge" *ngIf="dashboardStats.institutes">{{
+          dashboardStats.institutes
+        }}</span>
+      </div>
+
+      <div
+        class="nav-item"
+        [class.active]="activePage === 'knowledge'"
+        (click)="switchPage('knowledge')"
+      >
+        <div class="nav-ico">
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <path d="M4 6h16M4 12h16M4 18h10" />
+          </svg>
+        </div>
+        <span class="nav-label">Галузі знань</span>
+      </div>
+
+      <div
+        class="nav-item"
+        [class.active]="activePage === 'specialties'"
+        (click)="switchPage('specialties')"
+      >
+        <div class="nav-ico">
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <path d="M12 14l9-5-9-5-9 5 9 5z" />
+            <path
+              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+            />
+          </svg>
+        </div>
+        <span class="nav-label">Спеціальності</span>
+        <span class="nav-badge" *ngIf="dashboardStats.specialties">{{
+          dashboardStats.specialties
+        }}</span>
+      </div>
+
+      <div class="nav-section-label">Контент</div>
+      <div
+        class="nav-item"
+        [class.active]="activePage === 'companies'"
+        (click)="switchPage('companies')"
+      >
+        <div class="nav-ico">
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <rect x="2" y="7" width="20" height="14" rx="2" />
+            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+          </svg>
+        </div>
+        <span class="nav-label">Компанії</span>
+      </div>
+
+      <div class="nav-item" [class.active]="activePage === 'media'" (click)="switchPage('media')">
+        <div class="nav-ico">
+          <svg
+            width="18"
+            height="18"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+            stroke-width="1.8"
+          >
+            <polygon points="23 7 16 12 23 17 23 7" />
+            <rect x="1" y="5" width="15" height="14" rx="2" />
+          </svg>
+        </div>
+        <span class="nav-label">Медіа</span>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">АД</div>
+        <div>
+          <div class="sidebar-user-name">{{ auth.getUser()?.username ?? 'Адміністратор' }}</div>
+          <div class="sidebar-user-role">Супер-адмін</div>
+        </div>
+      </div>
+      <button
+        class="btn btn-outline btn-sm"
+        style="margin-top: 10px; width: 100%; justify-content: center; gap: 6px"
+        (click)="logout()"
+      >
+        <svg
+          width="13"
+          height="13"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+        </svg>
+        Вийти
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main">
+    <!-- ── TOPBAR ── -->
+    <header class="topbar">
+      <div class="topbar-title">
+        {{ titles[activePage] }}
+        <span class="topbar-loading" *ngIf="loadingPage === activePage">
+          <span class="spinner-sm"></span>
+        </span>
+      </div>
+      <div class="topbar-actions">
+        <div class="search-input-wrap">
+          <svg
+            class="search-ico"
+            width="14"
+            height="14"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input type="text" class="search-input" placeholder="Пошук по сайту..." />
+        </div>
+        <button class="btn btn-primary" (click)="openDrawer('specialty')">
+          <svg
+            width="14"
+            height="14"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2.5"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+          Додати
+        </button>
+      </div>
+    </header>
+
+    <!-- ════ DASHBOARD ════ -->
+    <div class="content" [class.active]="activePage === 'dashboard'" id="page-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card green" style="animation: fadeUp 0.4s ease both">
+          <div class="stat-card-ico">
+            <svg
+              width="64"
+              height="64"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#1a4a2e"
+              stroke-width="1"
+            >
+              <path
+                d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M6 21V6a2 2 0 012-2h8a2 2 0 012 2v15"
+              />
+            </svg>
+          </div>
+          <div class="stat-card-label">Інститути</div>
+          <div class="stat-card-num">{{ dashboardStats.institutes }}</div>
+          <div class="stat-card-sub">{{ institutes | activeCount }} активних</div>
+        </div>
+        <div class="stat-card gold" style="animation: fadeUp 0.4s 0.06s ease both">
+          <div class="stat-card-ico">
+            <svg
+              width="64"
+              height="64"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#c9a227"
+              stroke-width="1"
+            >
+              <path d="M12 14l9-5-9-5-9 5 9 5z" />
+              <path
+                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055"
+              />
+            </svg>
+          </div>
+          <div class="stat-card-label">Спеціальності</div>
+          <div class="stat-card-num">{{ dashboardStats.specialties }}</div>
+          <div class="stat-card-sub">бакалавр + магістр</div>
+        </div>
+        <div class="stat-card red" style="animation: fadeUp 0.4s 0.12s ease both">
+          <div class="stat-card-ico">
+            <svg
+              width="64"
+              height="64"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#c0392b"
+              stroke-width="1"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+            </svg>
+          </div>
+          <div class="stat-card-label">Компанії</div>
+          <div class="stat-card-num">{{ dashboardStats.companies }}</div>
+          <div class="stat-card-sub">партнери-роботодавці</div>
+        </div>
+        <div class="stat-card blue" style="animation: fadeUp 0.4s 0.18s ease both">
+          <div class="stat-card-ico">
+            <svg
+              width="64"
+              height="64"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="#2563eb"
+              stroke-width="1"
+            >
+              <path d="M4 6h16M4 10h16M4 14h8" />
+            </svg>
+          </div>
+          <div class="stat-card-label">Галузі знань</div>
+          <div class="stat-card-num">{{ dashboardStats.knowledgeFields }}</div>
+          <div class="stat-card-sub">активних</div>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px">
+        <!-- Institutes overview -->
+        <div class="card" style="animation: fadeUp 0.4s 0.22s ease both">
+          <div class="card-header">
+            <div class="card-title">Інститути — огляд</div>
+          </div>
+          <div class="card-body">
+            <div class="inst-row" *ngFor="let inst of institutes.slice(0, 4)">
+              <div class="inst-num-badge" [style.background]="inst.color ?? '#888'">
+                {{ inst.short_name ?? inst.name.slice(0, 2) }}
+              </div>
+              <div class="inst-info">
+                <div class="inst-name">{{ inst.short_name ?? inst.name }}</div>
+                <div class="inst-meta">{{ inst.description?.slice(0, 40) }}</div>
+              </div>
+              <div class="inst-stats">
+                <div class="inst-stat">
+                  <div class="inst-stat-num">{{ specialties | countByInstitute: inst.id }}</div>
+                  <div class="inst-stat-label">спец.</div>
+                </div>
+                <div class="inst-stat">
+                  <div class="inst-stat-num">{{ companies | countByInstitute: inst.id }}</div>
+                  <div class="inst-stat-label">комп.</div>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="!institutes.length"
+              style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 13px"
+            >
+              Дані завантажуються...
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div>
+          <div class="card" style="animation: fadeUp 0.4s 0.28s ease both; margin-bottom: 20px">
+            <div class="card-header"><div class="card-title">Швидкі дії</div></div>
+            <div
+              class="card-body"
+              style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px"
+            >
+              <button
+                class="btn btn-outline"
+                style="justify-content: flex-start; gap: 10px"
+                (click)="openDrawer('specialty')"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Нова спеціальність
+              </button>
+              <button
+                class="btn btn-outline"
+                style="justify-content: flex-start; gap: 10px"
+                (click)="openDrawer('company')"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Нова компанія
+              </button>
+              <button
+                class="btn btn-outline"
+                style="justify-content: flex-start; gap: 10px"
+                (click)="switchPage('media')"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+                Завантажити медіа
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ INSTITUTES ════ -->
+    <div class="content" [class.active]="activePage === 'institutes'" id="page-institutes">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Інститути</div>
+          <div class="filter-row">
+            <button class="btn btn-primary btn-sm" (click)="openDrawer('institute')">
+              <svg
+                width="12"
+                height="12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Додати інститут
+            </button>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Назва</th>
+              <th>Галузей знань</th>
+              <th>Спеціальностей</th>
+              <th>Компаній</th>
+              <th>Статус</th>
+              <th>Дії</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let inst of institutes">
+              <td><div class="sort-handle">⠿</div></td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px">
+                  <div
+                    class="inst-num-badge"
+                    style="width: 36px; height: 36px; font-size: 10px"
+                    [style.background]="inst.color ?? '#888'"
+                  >
+                    {{ inst.short_name ?? inst.name.slice(0, 2) }}
+                  </div>
+                  <div>
+                    <div class="td-name">{{ inst.name }}</div>
+                    <div style="font-size: 11px; color: var(--text-muted)">
+                      {{ inst.short_name }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ knowledgeFields | countByInstitute: inst.id }}</td>
+              <td>{{ specialties | countByKnowledgeInstitute: inst.id }}</td>
+              <td>{{ companies | countByInstitute: inst.id }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.badge-active]="inst.is_active"
+                  [class.badge-inactive]="!inst.is_active"
+                >
+                  {{ inst.is_active ? 'Активний' : 'Неактивний' }}
+                </span>
+              </td>
+              <td>
+                <div class="td-actions">
+                  <button
+                    class="btn btn-outline btn-sm btn-icon"
+                    (click)="openDrawer('institute', inst)"
+                    title="Редагувати"
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    class="btn btn-outline btn-sm btn-icon"
+                    (click)="confirmDelete(inst.name, inst.id, 'institute')"
+                    title="Видалити"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="!institutes.length">
+              <td colspan="7" style="text-align: center; padding: 32px; color: var(--text-muted)">
+                Інститутів ще немає
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ KNOWLEDGE FIELDS ════ -->
+    <div class="content" [class.active]="activePage === 'knowledge'" id="page-knowledge">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Галузі знань</div>
+          <div style="display: flex; gap: 10px; align-items: center">
+            <select
+              class="form-control"
+              style="width: 200px; padding: 7px 32px 7px 12px"
+              (change)="onKnowledgeInstituteChange($any($event.target).value)"
+            >
+              <option value="">Всі інститути</option>
+              <option *ngFor="let inst of institutes" [value]="inst.id">
+                {{ inst.short_name ?? inst.name }}
+              </option>
+            </select>
+            <button class="btn btn-primary btn-sm" (click)="openDrawer('knowledge')">
+              <svg
+                width="12"
+                height="12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Додати галузь
+            </button>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Код</th>
+              <th>Назва галузі</th>
+              <th>Інститут</th>
+              <th>Спеціальностей</th>
+              <th>Сортування</th>
+              <th>Статус</th>
+              <th>Дії</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let kf of knowledgeFields">
+              <td><div class="sort-handle">⠿</div></td>
+              <td>
+                <span class="td-code">{{ kf.code }}</span>
+              </td>
+              <td class="td-name">{{ kf.name }}</td>
+              <td>{{ kf.institute_id | instituteName: institutes }}</td>
+              <td>{{ specialties | countByField: kf.id }}</td>
+              <td>{{ kf.sort_order }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [class.badge-active]="kf.is_active"
+                  [class.badge-inactive]="!kf.is_active"
+                >
+                  {{ kf.is_active ? 'Активна' : 'Неактивна' }}
+                </span>
+              </td>
+              <td>
+                <div class="td-actions">
+                  <button
+                    class="btn btn-outline btn-sm btn-icon"
+                    (click)="openDrawer('knowledge', kf)"
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    class="btn btn-outline btn-sm btn-icon"
+                    (click)="confirmDelete(kf.name, kf.id, 'knowledge')"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="!knowledgeFields.length">
+              <td colspan="8" style="text-align: center; padding: 32px; color: var(--text-muted)">
+                Галузей знань ще немає
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ SPECIALTIES ════ -->
+    <div class="content" [class.active]="activePage === 'specialties'" id="page-specialties">
+      <div class="card">
+        <div class="card-header" style="flex-wrap: wrap; gap: 12px">
+          <div class="card-title">Спеціальності</div>
+          <div class="filter-row">
+            <button
+              class="filter-chip"
+              [class.active]="activeDegree === 'all'"
+              (click)="filterSpecialties('all')"
+            >
+              Усі
+            </button>
+            <button
+              class="filter-chip"
+              [class.active]="activeDegree === 'BACHELOR'"
+              (click)="filterSpecialties('BACHELOR')"
+            >
+              Бакалавр
+            </button>
+            <button
+              class="filter-chip"
+              [class.active]="activeDegree === 'MASTER'"
+              (click)="filterSpecialties('MASTER')"
+            >
+              Магістр
+            </button>
+            <div class="search-input-wrap" style="max-width: 200px">
+              <svg
+                class="search-ico"
+                width="13"
+                height="13"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
+              </svg>
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Пошук..."
+                (input)="searchSpecialties($any($event.target).value)"
+              />
+            </div>
+            <button class="btn btn-primary btn-sm" (click)="openDrawer('specialty')">
+              <svg
+                width="12"
+                height="12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Нова спеціальність
+            </button>
+          </div>
+        </div>
+
+        <div id="specialtiesTree">
+          <div
+            class="tree-section"
+            *ngFor="let node of treeData"
+            [class.open]="isTreeOpen(node.field.id)"
+          >
+            <div class="tree-section-header" (click)="toggleTree(node.field.id)">
+              <div class="tree-toggle">{{ isTreeOpen(node.field.id) ? '▾' : '▸' }}</div>
+              <span class="td-code">{{ node.field.code }}</span>
+              <span style="font-weight: 500; font-size: 13px">{{ node.field.name }}</span>
+              <span style="font-size: 12px; color: var(--text-muted); margin-left: auto"
+                >{{ node.specs.length }} спеціальн.</span
+              >
+            </div>
+            <div class="tree-children" *ngIf="isTreeOpen(node.field.id)">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Ступінь</th>
+                    <th>Назва</th>
+                    <th>Років</th>
+                    <th>Бюджет</th>
+                    <th>% Праце.</th>
+                    <th>Статус</th>
+                    <th>Дії</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let s of node.specs">
+                    <td><div class="sort-handle">⠿</div></td>
+                    <td>
+                      <span
+                        class="badge"
+                        [class.badge-bachelor]="s.degree === 'BACHELOR'"
+                        [class.badge-master]="s.degree === 'MASTER'"
+                      >
+                        {{
+                          s.degree === 'BACHELOR'
+                            ? 'Бакалавр'
+                            : s.degree === 'MASTER'
+                              ? 'Магістр'
+                              : s.degree
+                        }}
+                      </span>
+                    </td>
+                    <td class="td-name">{{ s.name }}</td>
+                    <td>{{ s.study_years }}</td>
+                    <td>
+                      <span
+                        *ngIf="s.has_budget"
+                        style="color: var(--green-mid); font-weight: 600; font-size: 13px"
+                        >✓</span
+                      >
+                      <span *ngIf="!s.has_budget" style="color: var(--text-muted)">—</span>
+                    </td>
+                    <td>
+                      <div *ngIf="s.employment_rate">{{ s.employment_rate }}%</div>
+                      <div class="progress-bar" style="width: 100px" *ngIf="s.employment_rate">
+                        <div class="progress-fill" [style.width.%]="s.employment_rate"></div>
+                      </div>
+                      <span *ngIf="!s.employment_rate" style="color: var(--text-muted)">—</span>
+                    </td>
+                    <td>
+                      <span
+                        class="badge"
+                        [class.badge-active]="s.is_active"
+                        [class.badge-inactive]="!s.is_active"
+                      >
+                        {{ s.is_active ? 'Активна' : 'Неактивна' }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="td-actions">
+                        <button
+                          class="btn btn-outline btn-sm btn-icon"
+                          (click)="openDrawer('specialty', s)"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          class="btn btn-outline btn-sm btn-icon"
+                          (click)="confirmDelete(s.name, s.id, 'specialty')"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            *ngIf="!treeData.length"
+            style="padding: 48px; text-align: center; color: var(--text-muted)"
+          >
+            Спеціальностей ще немає
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ COMPANIES ════ -->
+    <div class="content" [class.active]="activePage === 'companies'" id="page-companies">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Компанії-роботодавці</div>
+          <div style="display: flex; gap: 10px; align-items: center">
+            <select
+              class="form-control"
+              style="width: 220px; padding: 7px 32px 7px 12px"
+              (change)="onCompanyInstituteChange($any($event.target).value)"
+            >
+              <option value="">Всі інститути</option>
+              <option *ngFor="let inst of institutes" [value]="inst.id">
+                {{ inst.short_name ?? inst.name }}
+              </option>
+            </select>
+            <button class="btn btn-primary btn-sm" (click)="openDrawer('company')">
+              <svg
+                width="12"
+                height="12"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              Додати компанію
+            </button>
+          </div>
+        </div>
+
+        <div class="companies-grid">
+          <div class="company-card" *ngFor="let c of companies">
+            <div
+              class="company-status"
+              [class.active]="c.is_active"
+              [class.inactive]="!c.is_active"
+            ></div>
+            <img
+              *ngIf="c.logo_url"
+              [src]="c.logo_url"
+              [alt]="c.name"
+              class="company-logo"
+              style="max-width: 80px; max-height: 36px; object-fit: contain"
+            />
+            <div *ngIf="!c.logo_url" class="company-logo-placeholder">
+              {{ c.name.slice(0, 3).toUpperCase() }}
+            </div>
+            <div class="company-name">{{ c.name }}</div>
+            <div class="company-actions">
+              <button class="btn btn-outline btn-sm btn-icon" (click)="openDrawer('company', c)">
+                ✏️
+              </button>
+              <button
+                class="btn btn-outline btn-sm btn-icon"
+                (click)="confirmDelete(c.name, c.id, 'company')"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+
+          <div
+            class="company-card"
+            style="
+              cursor: pointer;
+              border: 1.5px dashed rgba(0, 0, 0, 0.12);
+              background: transparent;
+            "
+            (click)="openDrawer('company')"
+          >
+            <div style="font-size: 28px; opacity: 0.2">＋</div>
+            <div class="company-name" style="color: var(--text-muted)">Додати компанію</div>
+          </div>
+
+          <div
+            *ngIf="!companies.length"
+            style="padding: 32px; text-align: center; color: var(--text-muted); grid-column: 1/-1"
+          >
+            Компаній ще немає
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ MEDIA ════ -->
+    <div class="content" [class.active]="activePage === 'media'" id="page-media">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Медіа-файли</div>
+          <select
+            class="form-control"
+            style="width: 220px; padding: 7px 32px 7px 12px"
+            (change)="onMediaInstituteChange($any($event.target).value)"
+          >
+            <option value="">Оберіть інститут</option>
+            <option *ngFor="let inst of institutes" [value]="inst.id">
+              {{ inst.short_name ?? inst.name }}
+            </option>
+          </select>
+        </div>
+        <div class="tabs">
+          <div class="tab" [class.active]="activeTab === 'video'" (click)="setTab('video')">
+            Відео
+          </div>
+          <div class="tab" [class.active]="activeTab === 'photo'" (click)="setTab('photo')">
+            Фото
+          </div>
+          <div class="tab" [class.active]="activeTab === 'docs'" (click)="setTab('docs')">
+            Документи
+          </div>
+        </div>
+        <div style="padding: 24px">
+          <!-- Upload zone -->
+          <div
+            class="upload-drop-zone"
+            (mouseenter)="uploadZoneHover = true"
+            (mouseleave)="uploadZoneHover = false"
+            [style.border-color]="uploadZoneHover ? 'var(--green-mid)' : 'rgba(0,0,0,0.12)'"
+            style="
+              border: 2px dashed rgba(0, 0, 0, 0.12);
+              border-radius: var(--radius-md);
+              padding: 48px;
+              text-align: center;
+              cursor: pointer;
+              transition: var(--transition);
+            "
+            (click)="openAddMediaModal()"
+          >
+            <div style="font-size: 36px; margin-bottom: 12px; opacity: 0.25">
+              {{ activeTab === 'video' ? '📹' : activeTab === 'photo' ? '🖼️' : '📄' }}
+            </div>
+            <div
+              style="
+                font-family: 'Unbounded', sans-serif;
+                font-size: 12px;
+                font-weight: 700;
+                color: var(--text-dark);
+                margin-bottom: 6px;
+              "
+            >
+              {{
+                activeTab === 'video'
+                  ? 'Завантажити відео або вставити URL'
+                  : activeTab === 'photo'
+                    ? 'Завантажити фото'
+                    : 'Завантажити документ'
+              }}
+            </div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px">
+              {{
+                activeTab === 'video'
+                  ? 'YouTube, Vimeo або MP4 (макс. 500MB)'
+                  : 'PNG, JPG, SVG або PDF'
+              }}
+            </div>
+            <button class="btn btn-primary" type="button">Обрати файл</button>
+          </div>
+
+          <!-- Media list -->
+          <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px">
+            <div
+              *ngFor="let m of media"
+              style="
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 16px;
+                background: var(--cream);
+                border-radius: var(--radius-sm);
+                border: 1px solid rgba(0, 0, 0, 0.06);
+              "
+            >
+              <div
+                style="
+                  width: 48px;
+                  height: 36px;
+                  background: #1a1a1a;
+                  border-radius: 6px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-size: 14px;
+                  color: white;
+                "
+              >
+                {{ m.type === 'video' ? '▶' : m.type === 'photo' ? '🖼️' : '📄' }}
+              </div>
+              <div style="flex: 1">
+                <div style="font-size: 13px; font-weight: 500; color: var(--text-dark)">
+                  {{ m.caption ?? m.url }}
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted)">
+                  {{ m.type }} · {{ m.url }}
+                </div>
+              </div>
+              <span class="badge" [class.badge-active]="m.is_active ?? true">Активне</span>
+              <button class="btn btn-outline btn-sm btn-icon" (click)="openDrawer('media', m)">
+                ✏️
+              </button>
+              <button
+                class="btn btn-outline btn-sm btn-icon"
+                (click)="confirmDelete(m.caption ?? m.url, m.id, 'media')"
+              >
+                🗑️
+              </button>
+            </div>
+
+            <div
+              *ngIf="!media.length && selectedMediaInstitute && loadingPage !== 'media'"
+              style="padding: 32px; text-align: center; color: var(--text-muted); font-size: 13px"
+            >
+              Медіафайлів ще немає для цього інституту
+            </div>
+            <div
+              *ngIf="!selectedMediaInstitute"
+              style="padding: 32px; text-align: center; color: var(--text-muted); font-size: 13px"
+            >
+              Оберіть інститут для перегляду медіа
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /main -->
+
+<!-- ═══ DRAWER — SPECIALTY ═══ -->
+<div
+  class="drawer-overlay"
+  [class.active]="openedDrawer === 'specialty'"
+  (click)="$event.target === $event.currentTarget && closeDrawer()"
+>
+  <div class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-icon">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="var(--green-mid)"
+          stroke-width="1.8"
+        >
+          <path d="M12 14l9-5-9-5-9 5 9 5z" />
+        </svg>
+      </div>
+      <div>
+        <div class="drawer-title">{{ editingItem ? 'Редагувати' : 'Нова' }} спеціальність</div>
+        <div class="drawer-subtitle">
+          {{ editingItem ? editingItem.name : 'Заповніть усі поля форми' }}
+        </div>
+      </div>
+      <button class="drawer-close" (click)="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="form-section-title">Прив'язка</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Галузь знань <span>*</span></label>
+          <select class="form-control" [(ngModel)]="currentSpecialty.knowledge_field_id">
+            <option value="">Оберіть галузь...</option>
+            <option *ngFor="let kf of knowledgeFields" [value]="kf.id">
+              {{ kf.code }} — {{ kf.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-title">Основна інформація</div>
+      <div class="form-group">
+        <label class="form-label">Назва спеціальності <span>*</span></label>
+        <input
+          class="form-control"
+          type="text"
+          [(ngModel)]="currentSpecialty.name"
+          placeholder="Туризм, рекреація та гостинність"
+        />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Освітній ступінь <span>*</span></label>
+          <select class="form-control" [(ngModel)]="currentSpecialty.degree">
+            <option value="BACHELOR">Бакалавр</option>
+            <option value="MASTER">Магістр</option>
+            <option value="PHD">PhD</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Тривалість (років)</label>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="currentSpecialty.study_years"
+            min="1"
+            max="6"
+            step="0.5"
+          />
+        </div>
+      </div>
+
+      <div class="form-section-title">Статистика</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Кількість випускників</label>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="currentSpecialty.graduates_count"
+            placeholder="22000"
+          />
+          <div class="form-hint">Виводиться як «22К+»</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">% Працевлаштування</label>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="currentSpecialty.employment_rate"
+            min="0"
+            max="100"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Партнерів-роботодавців</label>
+          <input
+            class="form-control"
+            type="number"
+            [(ngModel)]="currentSpecialty.employers_count"
+          />
+        </div>
+        <div class="form-group"></div>
+      </div>
+
+      <div class="form-section-title">Форми навчання</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Бюджетна форма</div>
+          <div class="toggle-desc">Державне фінансування</div>
+        </div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentSpecialty.has_budget" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Контрактна форма</div></div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentSpecialty.has_contract" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+
+      <div class="form-section-title">Опис програми</div>
+      <div class="form-group">
+        <label class="form-label">Загальний опис</label>
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="currentSpecialty.description"
+        ></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Виділений блок (золотий фон)</label>
+        <textarea
+          class="form-control"
+          rows="2"
+          [(ngModel)]="currentSpecialty.program_description"
+        ></textarea>
+      </div>
+
+      <div class="form-section-title">Дисципліни «Що будеш вивчати»</div>
+      <div
+        *ngFor="let type of ['fundamental', 'profile', 'specialty']; let ti = index"
+        style="margin-bottom: 12px"
+      >
+        <div class="form-label" style="margin-bottom: 8px">
+          {{ ti === 0 ? 'Фундаментальні' : ti === 1 ? 'Профільні' : 'Спеціалізація та практика' }}
+          <span style="font-weight: 400; text-transform: none; font-size: 10px; letter-spacing: 0"
+            >(Enter щоб додати)</span
+          >
+        </div>
+        <div
+          class="tags-editor"
+          (click)="$any($event.currentTarget).querySelector('input').focus()"
+        >
+          <span class="tag-chip" *ngFor="let tag of tags[type]; let i = index">
+            {{ tag }}<button type="button" (click)="removeTag(type, i)">×</button>
+          </span>
+          <input class="tag-input" placeholder="Додати..." (keydown)="addTag($event, type)" />
+        </div>
+      </div>
+
+      <div class="form-section-title">Ким ти можеш стати</div>
+      <div class="role-item" *ngFor="let role of roles; let i = index">
+        <div class="role-num">{{ (i + 1).toString().padStart(2, '0') }}</div>
+        <div class="role-fields">
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Назва посади"
+            [(ngModel)]="role.title"
+          />
+          <textarea
+            class="form-control"
+            rows="2"
+            placeholder="Що робить цей фахівець..."
+            [(ngModel)]="role.description"
+          ></textarea>
+          <div class="role-actions">
+            <button
+              class="btn btn-outline btn-sm btn-icon"
+              type="button"
+              (click)="removeRole(i)"
+              style="color: var(--red)"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      </div>
+      <button class="add-role-btn" type="button" (click)="addRole()">
+        <svg
+          width="14"
+          height="14"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 5v14M5 12h14" />
+        </svg>
+        Додати роль
+      </button>
+
+      <div class="form-section-title">Відображення</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Активна</div>
+          <div class="toggle-desc">Відображається на сайті</div>
+        </div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentSpecialty.is_active" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Порядок сортування</label>
+        <input
+          class="form-control"
+          type="number"
+          [(ngModel)]="currentSpecialty.sort_order"
+          min="1"
+        />
+        <div class="form-hint">Менше число — вище у списку</div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button
+        class="btn btn-primary"
+        style="flex: 1"
+        [disabled]="saving"
+        (click)="saveAndClose('specialty')"
+      >
+        <span class="spinner-sm" *ngIf="saving"></span>
+        {{ saving ? '' : editingItem ? 'Зберегти зміни' : 'Зберегти спеціальність' }}
+      </button>
+      <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DRAWER — INSTITUTE ═══ -->
+<div
+  class="drawer-overlay"
+  [class.active]="openedDrawer === 'institute'"
+  (click)="$event.target === $event.currentTarget && closeDrawer()"
+>
+  <div class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-icon">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="var(--green-mid)"
+          stroke-width="1.8"
+        >
+          <path
+            d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M6 21V6a2 2 0 012-2h8a2 2 0 012 2v15"
+          />
+        </svg>
+      </div>
+      <div>
+        <div class="drawer-title">{{ editingItem ? 'Редагувати' : 'Новий' }} інститут</div>
+        <div class="drawer-subtitle">{{ editingItem?.short_name ?? 'Заповніть форму' }}</div>
+      </div>
+      <button class="drawer-close" (click)="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="form-section-title">Основна інформація</div>
+      <div class="form-group">
+        <label class="form-label">Повна назва <span>*</span></label>
+        <textarea class="form-control" rows="2" [(ngModel)]="currentInstitute.name"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Коротка назва</label>
+          <input class="form-control" type="text" [(ngModel)]="currentInstitute.short_name" />
+        </div>
+        <!-- ══ ВИПРАВЛЕНО: кольоровий пікер з текстовим полем ══ -->
+        <div class="form-group">
+          <label class="form-label">Колір (HEX)</label>
+          <div class="color-picker-wrap">
+            <div
+              class="color-picker-swatch"
+              [style.background]="currentInstitute.color ?? '#1a4a2e'"
+            >
+              <input
+                type="color"
+                class="color-picker-native"
+                [value]="currentInstitute.color ?? '#1a4a2e'"
+                (input)="onInstituteColorInput($any($event.target).value)"
+                (change)="onInstituteColorInput($any($event.target).value)"
+              />
+            </div>
+            <input
+              class="form-control"
+              type="text"
+              [value]="currentInstitute.color ?? '#1a4a2e'"
+              (input)="onInstituteColorHex($any($event.target).value)"
+              placeholder="#1a4a2e"
+              maxlength="7"
+              style="font-family: monospace; letter-spacing: 0.04em"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Опис інституту</label>
+        <textarea
+          class="form-control"
+          rows="3"
+          [(ngModel)]="currentInstitute.description"
+          placeholder="Загальний опис..."
+        ></textarea>
+      </div>
+      <div class="form-section-title">Відео</div>
+      <div class="form-group">
+        <label class="form-label">URL відео (YouTube / Vimeo)</label>
+        <input
+          class="form-control"
+          type="url"
+          [(ngModel)]="currentInstitute.video_url"
+          placeholder="https://youtube.com/embed/..."
+        />
+        <div class="form-hint">Embed-посилання або пряме відео</div>
+      </div>
+      <div class="form-section-title">Відображення</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Активний</div>
+          <div class="toggle-desc">Відображається на сайті</div>
+        </div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentInstitute.is_active" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Порядок сортування</label>
+        <input class="form-control" type="number" [(ngModel)]="currentInstitute.sort_order" />
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button
+        class="btn btn-primary"
+        style="flex: 1"
+        [disabled]="saving"
+        (click)="saveAndClose('institute')"
+      >
+        <span class="spinner-sm" *ngIf="saving"></span>
+        {{ saving ? '' : 'Зберегти' }}
+      </button>
+      <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DRAWER — COMPANY ═══ -->
+<div
+  class="drawer-overlay"
+  [class.active]="openedDrawer === 'company'"
+  (click)="$event.target === $event.currentTarget && closeDrawer()"
+>
+  <div class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-icon">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="var(--green-mid)"
+          stroke-width="1.8"
+        >
+          <rect x="2" y="7" width="20" height="14" rx="2" />
+          <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+        </svg>
+      </div>
+      <div>
+        <div class="drawer-title">{{ editingItem ? 'Редагувати' : 'Нова' }} компанія</div>
+        <div class="drawer-subtitle">Партнер-роботодавець</div>
+      </div>
+      <button class="drawer-close" (click)="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="form-section-title">Прив'язка</div>
+      <div class="form-group">
+        <label class="form-label">Інститут <span>*</span></label>
+        <select class="form-control" [(ngModel)]="currentCompany.institute_id">
+          <option value="">Оберіть інститут...</option>
+          <option *ngFor="let inst of institutes" [value]="inst.id">
+            {{ inst.short_name ?? inst.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-section-title">Компанія</div>
+      <div class="form-group">
+        <label class="form-label">Назва <span>*</span></label>
+        <input
+          class="form-control"
+          type="text"
+          [(ngModel)]="currentCompany.name"
+          placeholder="Marriott International"
+        />
+      </div>
+      <div class="form-group">
+        <label class="form-label">URL логотипу</label>
+        <input
+          class="form-control"
+          type="url"
+          [(ngModel)]="currentCompany.logo_url"
+          placeholder="https://..."
+        />
+        <div class="form-hint">SVG або PNG з прозорим фоном, рек. 200×80px</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Сайт компанії</label>
+        <input
+          class="form-control"
+          type="url"
+          [(ngModel)]="currentCompany.website_url"
+          placeholder="https://marriott.com"
+        />
+      </div>
+      <div class="form-section-title">Відображення</div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Активна</div></div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentCompany.is_active" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Порядок сортування</label>
+        <input class="form-control" type="number" [(ngModel)]="currentCompany.sort_order" />
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button
+        class="btn btn-primary"
+        style="flex: 1"
+        [disabled]="saving"
+        (click)="saveAndClose('company')"
+      >
+        <span class="spinner-sm" *ngIf="saving"></span>
+        {{ saving ? '' : 'Зберегти компанію' }}
+      </button>
+      <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DRAWER — KNOWLEDGE ═══ -->
+<div
+  class="drawer-overlay"
+  [class.active]="openedDrawer === 'knowledge'"
+  (click)="$event.target === $event.currentTarget && closeDrawer()"
+>
+  <div class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-icon">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="var(--green-mid)"
+          stroke-width="1.8"
+        >
+          <path d="M4 6h16M4 12h16M4 18h10" />
+        </svg>
+      </div>
+      <div>
+        <div class="drawer-title">{{ editingItem ? 'Редагувати' : 'Нова' }} галузь знань</div>
+        <div class="drawer-subtitle">{{ editingItem?.name ?? 'Редагування запису' }}</div>
+      </div>
+      <button class="drawer-close" (click)="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="form-group">
+        <label class="form-label">Інститут <span>*</span></label>
+        <select class="form-control" [(ngModel)]="currentKnowledge.institute_id">
+          <option value="">Оберіть інститут...</option>
+          <option *ngFor="let inst of institutes" [value]="inst.id">
+            {{ inst.short_name ?? inst.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Код галузі <span>*</span></label>
+          <input
+            class="form-control"
+            type="text"
+            [(ngModel)]="currentKnowledge.code"
+            placeholder="J3"
+          />
+          <div class="form-hint">Офіційний код МОН</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Порядок</label>
+          <input class="form-control" type="number" [(ngModel)]="currentKnowledge.sort_order" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Назва галузі <span>*</span></label>
+        <input class="form-control" type="text" [(ngModel)]="currentKnowledge.name" />
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Активна</div></div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentKnowledge.is_active" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button
+        class="btn btn-primary"
+        style="flex: 1"
+        [disabled]="saving"
+        (click)="saveAndClose('knowledge')"
+      >
+        <span class="spinner-sm" *ngIf="saving"></span>
+        {{ saving ? '' : 'Зберегти' }}
+      </button>
+      <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DRAWER — MEDIA ═══ -->
+<div
+  class="drawer-overlay"
+  [class.active]="openedDrawer === 'media'"
+  (click)="$event.target === $event.currentTarget && closeDrawer()"
+>
+  <div class="drawer">
+    <div class="drawer-header">
+      <div class="drawer-header-icon">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="var(--green-mid)"
+          stroke-width="1.8"
+        >
+          <polygon points="23 7 16 12 23 17 23 7" />
+          <rect x="1" y="5" width="15" height="14" rx="2" />
+        </svg>
+      </div>
+      <div>
+        <div class="drawer-title">{{ editingItem ? 'Редагувати' : 'Нове' }} медіа</div>
+        <div class="drawer-subtitle">
+          {{ editingItem?.caption ?? editingItem?.url ?? 'Заповніть форму' }}
+        </div>
+      </div>
+      <button class="drawer-close" (click)="closeDrawer()">✕</button>
+    </div>
+    <div class="drawer-body">
+      <div class="form-section-title">Тип медіа</div>
+      <div class="form-group">
+        <label class="form-label">Тип <span>*</span></label>
+        <select class="form-control" [(ngModel)]="currentMedia.type">
+          <option value="video">Відео</option>
+          <option value="photo">Фото</option>
+          <option value="docs">Документ</option>
+        </select>
+      </div>
+
+      <div class="form-section-title">Контент</div>
+      <div class="form-group">
+        <label class="form-label">URL <span>*</span></label>
+        <input
+          class="form-control"
+          type="url"
+          [(ngModel)]="currentMedia.url"
+          [placeholder]="
+            currentMedia.type === 'video' ? 'https://youtube.com/embed/...' : 'https://...'
+          "
+        />
+        <div class="form-hint" *ngIf="currentMedia.type === 'video'">
+          YouTube embed або пряме посилання на відео
+        </div>
+        <div class="form-hint" *ngIf="currentMedia.type === 'photo'">
+          Пряме посилання на зображення (PNG, JPG, SVG)
+        </div>
+        <div class="form-hint" *ngIf="currentMedia.type === 'docs'">
+          Пряме посилання на документ (PDF тощо)
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Підпис</label>
+        <input
+          class="form-control"
+          type="text"
+          [(ngModel)]="currentMedia.caption"
+          placeholder="Назва або опис файлу"
+        />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Порядок сортування</label>
+        <input class="form-control" type="number" [(ngModel)]="currentMedia.sort_order" min="1" />
+      </div>
+
+      <div class="form-section-title">Відображення</div>
+      <div class="toggle-row">
+        <div>
+          <div class="toggle-label">Активне</div>
+          <div class="toggle-desc">Відображається на сайті</div>
+        </div>
+        <label class="toggle"
+          ><input type="checkbox" [(ngModel)]="currentMedia.is_active" /><span
+            class="toggle-slider"
+          ></span
+        ></label>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button
+        class="btn btn-primary"
+        style="flex: 1"
+        [disabled]="saving"
+        (click)="saveAndClose('media')"
+      >
+        <span class="spinner-sm" *ngIf="saving"></span>
+        {{ saving ? '' : editingItem ? 'Зберегти зміни' : 'Зберегти медіа' }}
+      </button>
+      <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL — DELETE ═══ -->
+<div
+  class="modal-overlay"
+  [class.active]="modalOpen"
+  (click)="$event.target === $event.currentTarget && closeModal()"
+>
+  <div class="modal">
+    <div class="modal-icon">🗑️</div>
+    <div class="modal-title">Видалити запис?</div>
+    <div class="modal-text">
+      Ви впевнені, що хочете видалити «{{ deleteTarget }}»? Цю дію неможливо скасувати.
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-danger" style="flex: 1" (click)="doDelete()">Видалити</button>
+      <button class="btn btn-outline" (click)="closeModal()">Скасувати</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TOASTS ═══ -->
+<div class="toast-container">
+  <div
+    class="toast"
+    *ngFor="let toast of toasts"
+    [class.show]="true"
+    [class.success]="toast.type === 'success'"
+    [class.error]="toast.type === 'error'"
+  >
+    <span>{{ toast.message }}</span>
+  </div>
+</div>

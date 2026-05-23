@@ -1,0 +1,107 @@
+/* ─── INSTITUTES GRID ─── */
+.institutes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.institute-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: var(--transition);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.institute-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: var(--transition);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.institute-card:hover::before {
+  opacity: 1;
+}
+
+.institute-card:hover {
+  transform: translateX(6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.institute-content {
+  flex: 1;
+}
+
+.institute-number {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.5;
+  margin-bottom: 4px;
+  letter-spacing: 0.1em;
+  color: white;
+}
+
+.institute-name {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: white;
+}
+
+.institute-arrow {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.institute-card:hover .institute-arrow {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(3px);
+}
+
+.arrow-svg {
+  color: white;
+  width: 14px;
+  height: 14px;
+}
+
+.inst-1 {
+  background: linear-gradient(135deg, #7b2d8b 0%, #a03eac 100%);
+  color: #f0e8f5;
+}
+.inst-2 {
+  background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+  color: #fff8e1;
+}
+.inst-3 {
+  background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+  color: #e3f2fd;
+}
+.inst-4 {
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  color: #fdecea;
+}
+.inst-5 {
+  background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+  color: #e8f5e9;
+}
+.inst-6 {
+  background: linear-gradient(135deg, #37474f 0%, #546e7a 100%);
+  color: #eceff1;
+}
