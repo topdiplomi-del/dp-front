@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.yourdomain.com',
+  apiUrl: 'https://ontu-prof-serv-production.up.railway.app/',
 };
