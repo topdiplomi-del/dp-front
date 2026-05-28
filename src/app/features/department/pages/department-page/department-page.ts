@@ -107,7 +107,7 @@ interface TreeNode {
   styleUrls: ['./department-page.css'],
 })
 export class DepartmentPage implements OnInit, OnDestroy {
-  private readonly base = environment.apiUrl || 'http://localhost:5000';
+  private readonly base = environment.apiUrl || 'https://ontu-prof-serv-production.up.railway.app/';
 
   // State
   loading = true;

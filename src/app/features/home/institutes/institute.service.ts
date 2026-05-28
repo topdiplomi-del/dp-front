@@ -5,8 +5,7 @@ import { Institute } from './institute.model';
 
 @Injectable({ providedIn: 'root' })
 export class InstituteService {
-  // Замінити на свій базовий URL
-  private readonly apiUrl = 'http://localhost:5000/api';
+  private readonly apiUrl = 'https://ontu-prof-serv-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 

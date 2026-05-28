@@ -1,34 +1,11 @@
+/* PAGE-SPECIFIC TOKENS */
 :root {
-  --green-dark: #1a4a2e;
-  --green-mid: #2d7a4f;
-  --green-light: #4aaa72;
-  --green-pale: #e8f5ee;
-  --gold: #c9a227;
-  --gold-light: #f0d97a;
   --gold-pale: #fdf6e3;
-  --cream: #faf8f2;
-  --text-dark: #1a1a1a;
-  --text-mid: #3d3d3d;
-  --text-muted: #7a7a7a;
   --white: #ffffff;
   --dept-color: #c0392b;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
   --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.07);
   --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.14);
   --transition: 0.32s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-html {
-  scroll-behavior: smooth;
-}
-body {
-  font-family: 'Geologica', sans-serif;
-  background: var(--cream);
-  color: var(--text-dark);
-  overflow-x: hidden;
-  min-height: 100vh;
 }
 
 /* HEADER */
