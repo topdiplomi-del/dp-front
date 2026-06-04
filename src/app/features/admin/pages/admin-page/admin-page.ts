@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, forkJoin, of } from 'rxjs';
@@ -49,6 +49,7 @@ export class AdminPage implements OnInit {
     private api: AdminApiService,
     public auth: AuthService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   // ─── Data ──────────────────────────────────────────────────────────────────
@@ -62,6 +63,7 @@ export class AdminPage implements OnInit {
   // ─── Loading ───────────────────────────────────────────────────────────────
 
   loadingPage = '';
+  readonly drawerLoading = signal(false);
 
   // ─── Navigation ────────────────────────────────────────────────────────────
 
@@ -124,10 +126,12 @@ export class AdminPage implements OnInit {
         };
         this.buildTree();
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showToast('Помилка завантаження даних', 'error');
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -138,10 +142,12 @@ export class AdminPage implements OnInit {
       next: (data) => {
         this.institutes = data;
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showToast('Помилка завантаження інститутів', 'error');
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -152,10 +158,12 @@ export class AdminPage implements OnInit {
       next: (data) => {
         this.knowledgeFields = data;
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showToast('Помилка завантаження галузей', 'error');
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -167,11 +175,13 @@ export class AdminPage implements OnInit {
         this.specialties = data;
         this.buildTree();
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.specialties = [];
         this.loadingPage = '';
         this.showToast('Помилка завантаження спеціальностей', 'error');
+        this.cdr.detectChanges();
       },
     });
   }
@@ -182,10 +192,12 @@ export class AdminPage implements OnInit {
       next: (data) => {
         this.companies = data;
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showToast('Помилка завантаження компаній', 'error');
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
     });
   }
@@ -200,43 +212,59 @@ export class AdminPage implements OnInit {
       next: (data) => {
         this.media = data;
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showToast('Помилка завантаження медіа', 'error');
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
     });
   }
 
   // ─── Drawer ────────────────────────────────────────────────────────────────
 
-  openedDrawer: DrawerType = '';
+  readonly openedDrawer = signal<DrawerType>('');
   editingItem: any = null;
 
   openDrawer(type: DrawerType, item?: any): void {
-    this.openedDrawer = type;
+    this.openedDrawer.set(type);
     this.editingItem = item ?? null;
 
     switch (type) {
       case 'specialty':
         if (item) {
-          this.api.getSpecialtyById(item.id).subscribe((data) => {
-            this.currentSpecialty = { ...data };
-            this.tags = {
-              fundamental:
-                data.disciplines
-                  ?.filter((d: any) => d.type === 'fundamental')
-                  .map((d: any) => d.name) ?? [],
-              profile:
-                data.disciplines
-                  ?.filter((d: any) => d.type === 'profile')
-                  .map((d: any) => d.name) ?? [],
-              specialty:
-                data.disciplines
-                  ?.filter((d: any) => d.type === 'specialty')
-                  .map((d: any) => d.name) ?? [],
-            };
-            this.roles = data.career_roles ?? [];
+          this.drawerLoading.set(true);
+          this.api.getSpecialtyById(item.id).subscribe({
+            next: (data) => {
+              this.currentSpecialty = { ...data };
+              this.hasBudget.set(data.has_budget ?? true);
+              this.hasContract.set(data.has_contract ?? true);
+              this.specialtyActive.set(data.is_active ?? true);
+              this.tags = {
+                fundamental:
+                  data.disciplines
+                    ?.filter((d: any) => d.type === 'fundamental')
+                    .map((d: any) => d.name) ?? [],
+                profile:
+                  data.disciplines
+                    ?.filter((d: any) => d.type === 'profile')
+                    .map((d: any) => d.name) ?? [],
+                specialty:
+                  data.disciplines
+                    ?.filter((d: any) => d.type === 'specialty')
+                    .map((d: any) => d.name) ?? [],
+              };
+              this.roles = data.career_roles ?? [];
+              this.drawerLoading.set(false);
+              this.cdr.detectChanges();
+            },
+            error: () => {
+              this.showToast('Помилка завантаження спеціальності', 'error');
+              this.drawerLoading.set(false);
+              this.closeDrawer();
+              this.cdr.detectChanges();
+            },
           });
         } else {
           this.resetSpecialtyForm();
@@ -247,25 +275,24 @@ export class AdminPage implements OnInit {
         this.currentInstitute = item
           ? { ...item }
           : { is_active: true, sort_order: 1, color: '#1a4a2e' };
+        this.instituteActive.set(this.currentInstitute.is_active ?? true);
         break;
 
       case 'knowledge':
         this.currentKnowledge = item ? { ...item } : { is_active: true, sort_order: 1 };
+        this.knowledgeActive.set(this.currentKnowledge.is_active ?? true);
         break;
 
       case 'company':
         this.currentCompany = item ? { ...item } : { is_active: true, sort_order: 1 };
+        this.companyActive.set(this.currentCompany.is_active ?? true);
         break;
 
       case 'media':
         this.currentMedia = item
           ? { ...item }
-          : {
-              type: this.activeTab,
-              is_active: true,
-              institute_id: this.selectedMediaInstitute,
-              sort_order: 1,
-            };
+          : { type: this.activeTab, is_active: true, institute_id: this.selectedMediaInstitute, sort_order: 1 };
+        this.mediaActive.set(this.currentMedia.is_active ?? true);
         break;
     }
 
@@ -275,8 +302,10 @@ export class AdminPage implements OnInit {
   }
 
   closeDrawer(): void {
-    this.openedDrawer = '';
+    this.openedDrawer.set('');
     this.editingItem = null;
+    this.saving.set(false);
+    this.drawerLoading.set(false);
     if (isPlatformBrowser(this.platformId)) {
       document.body.style.overflow = '';
     }
@@ -306,29 +335,40 @@ export class AdminPage implements OnInit {
 
   // ─── Save ──────────────────────────────────────────────────────────────────
 
-  saving = false;
+  readonly saving = signal(false);
 
   saveAndClose(type: DrawerType): void {
-    if (this.saving) return;
-    this.saving = true;
+    if (this.saving() || this.drawerLoading()) return;
+
+    if (type === 'institute' && !this.currentInstitute.name?.trim()) {
+      this.showToast('Введіть повну назву інституту', 'error');
+      return;
+    }
+    if (type === 'knowledge' && (!this.currentKnowledge.name?.trim() || !this.currentKnowledge.institute_id)) {
+      this.showToast('Заповніть назву та оберіть інститут', 'error');
+      return;
+    }
+    if (type === 'specialty' && (!this.currentSpecialty.name?.trim() || !this.currentSpecialty.knowledge_field_id)) {
+      this.showToast('Заповніть назву та оберіть галузь знань', 'error');
+      return;
+    }
+    if (type === 'company' && (!this.currentCompany.name?.trim() || !this.currentCompany.institute_id)) {
+      this.showToast('Заповніть назву та оберіть інститут', 'error');
+      return;
+    }
+    if (type === 'media' && !this.currentMedia.url?.trim()) {
+      this.showToast('Введіть URL медіафайлу', 'error');
+      return;
+    }
+
+    this.saving.set(true);
     switch (type) {
-      case 'institute':
-        this.saveInstitute();
-        break;
-      case 'knowledge':
-        this.saveKnowledge();
-        break;
-      case 'company':
-        this.saveCompany();
-        break;
-      case 'specialty':
-        this.saveSpecialty();
-        break;
-      case 'media':
-        this.saveMedia();
-        break;
-      default:
-        this.saving = false;
+      case 'institute':  this.saveInstitute();  break;
+      case 'knowledge':  this.saveKnowledge();  break;
+      case 'company':    this.saveCompany();    break;
+      case 'specialty':  this.saveSpecialty();  break;
+      case 'media':      this.saveMedia();      break;
+      default:           this.saving.set(false);
     }
   }
 
@@ -336,18 +376,19 @@ export class AdminPage implements OnInit {
     this.closeDrawer();
     reload();
     this.showToast(message, 'success');
-    this.saving = false;
   }
 
   private onSaveError(e: any): void {
     this.showToast(e?.error?.message ?? 'Помилка збереження', 'error');
-    this.saving = false;
+    this.saving.set(false);
+    this.cdr.detectChanges();
   }
 
   saveInstitute(): void {
+    const data = { ...this.currentInstitute, is_active: this.instituteActive() };
     const req = this.editingItem
-      ? this.api.updateInstitute(this.editingItem.id, this.currentInstitute)
-      : this.api.createInstitute(this.currentInstitute);
+      ? this.api.updateInstitute(this.editingItem.id, data)
+      : this.api.createInstitute(data);
     req.subscribe({
       next: () => this.onSaveSuccess('✓ Інститут збережено', () => this.loadInstitutes()),
       error: (e) => this.onSaveError(e),
@@ -355,9 +396,10 @@ export class AdminPage implements OnInit {
   }
 
   saveKnowledge(): void {
+    const data = { ...this.currentKnowledge, is_active: this.knowledgeActive() };
     const req = this.editingItem
-      ? this.api.updateKnowledgeField(this.editingItem.id, this.currentKnowledge)
-      : this.api.createKnowledgeField(this.currentKnowledge);
+      ? this.api.updateKnowledgeField(this.editingItem.id, data)
+      : this.api.createKnowledgeField(data);
     req.subscribe({
       next: () =>
         this.onSaveSuccess('✓ Галузь збережено', () =>
@@ -368,9 +410,10 @@ export class AdminPage implements OnInit {
   }
 
   saveCompany(): void {
+    const data = { ...this.currentCompany, is_active: this.companyActive() };
     const req = this.editingItem
-      ? this.api.updateCompany(this.editingItem.id, this.currentCompany)
-      : this.api.createCompany(this.currentCompany);
+      ? this.api.updateCompany(this.editingItem.id, data)
+      : this.api.createCompany(data);
     req.subscribe({
       next: () =>
         this.onSaveSuccess('✓ Компанію збережено', () =>
@@ -398,7 +441,14 @@ export class AdminPage implements OnInit {
         sort_order: i,
       })),
     ];
-    const payload = { ...this.currentSpecialty, disciplines, career_roles: this.roles };
+    const payload = {
+      ...this.currentSpecialty,
+      has_budget: this.hasBudget(),
+      has_contract: this.hasContract(),
+      is_active: this.specialtyActive(),
+      disciplines,
+      career_roles: this.roles,
+    };
     const req = this.editingItem
       ? this.api.updateSpecialty(this.editingItem.id, payload)
       : this.api.createSpecialty(payload);
@@ -409,9 +459,10 @@ export class AdminPage implements OnInit {
   }
 
   saveMedia(): void {
+    const data = { ...this.currentMedia, is_active: this.mediaActive() };
     const req = this.editingItem
-      ? this.api.updateMedia(this.selectedMediaInstitute, this.editingItem.id, this.currentMedia)
-      : this.api.createMedia(this.selectedMediaInstitute, this.currentMedia);
+      ? this.api.updateMedia(this.selectedMediaInstitute, this.editingItem.id, data)
+      : this.api.createMedia(this.selectedMediaInstitute, data);
     req.subscribe({
       next: () => this.onSaveSuccess('✓ Медіа збережено', () => this.loadMedia()),
       error: (e) => this.onSaveError(e),
@@ -426,6 +477,15 @@ export class AdminPage implements OnInit {
   currentSpecialty: any = {};
   currentMedia: any = {};
 
+  // Signals для всіх toggle-полів (Angular 21 zoneless requires signals for reactive UI)
+  readonly hasBudget = signal(true);
+  readonly hasContract = signal(true);
+  readonly specialtyActive = signal(true);
+  readonly instituteActive = signal(true);
+  readonly knowledgeActive = signal(true);
+  readonly companyActive = signal(true);
+  readonly mediaActive = signal(true);
+
   resetSpecialtyForm(): void {
     this.currentSpecialty = {
       knowledge_field_id: '',
@@ -437,11 +497,11 @@ export class AdminPage implements OnInit {
       graduates_count: null,
       employers_count: null,
       employment_rate: null,
-      has_budget: true,
-      has_contract: true,
-      is_active: true,
       sort_order: 1,
     };
+    this.hasBudget.set(true);
+    this.hasContract.set(true);
+    this.specialtyActive.set(true);
     this.tags = { fundamental: [], profile: [], specialty: [] };
     this.roles = [];
   }
@@ -492,10 +552,12 @@ export class AdminPage implements OnInit {
         this.closeModal();
         this.showToast(`🗑️ «${this.deleteTarget}» видалено`, 'error');
         this.loadPageData(this.activePage);
+        this.cdr.detectChanges();
       },
       error: (e: any) => {
         this.closeModal();
         this.showToast(e?.error?.message ?? 'Помилка видалення', 'error');
+        this.cdr.detectChanges();
       },
     });
   }
@@ -510,6 +572,13 @@ export class AdminPage implements OnInit {
     setTimeout(() => {
       this.toasts = this.toasts.filter((t) => t !== toast);
     }, 3000);
+  }
+
+  // ─── Toggle helper ────────────────────────────────────────────────────────
+
+  onToggle(obj: any, key: string): void {
+    obj[key] = !obj[key];
+    this.cdr.detectChanges();
   }
 
   // ─── Tags (disciplines) ────────────────────────────────────────────────────
@@ -662,10 +731,12 @@ export class AdminPage implements OnInit {
         };
         this.buildTree();
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
       error: () => {
         this.showToast('Помилка завантаження даних', 'error');
         this.loadingPage = '';
+        this.cdr.detectChanges();
       },
     });
   }

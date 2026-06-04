@@ -976,7 +976,7 @@
 <!-- ═══ DRAWER — SPECIALTY ═══ -->
 <div
   class="drawer-overlay"
-  [class.active]="openedDrawer === 'specialty'"
+  [class.active]="openedDrawer() === 'specialty'"
   (click)="$event.target === $event.currentTarget && closeDrawer()"
 >
   <div class="drawer">
@@ -1088,19 +1088,11 @@
           <div class="toggle-label">Бюджетна форма</div>
           <div class="toggle-desc">Державне фінансування</div>
         </div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentSpecialty.has_budget" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="hasBudget()" (click)="hasBudget.set(!hasBudget())"><span class="toggle-slider"></span></div>
       </div>
       <div class="toggle-row">
         <div><div class="toggle-label">Контрактна форма</div></div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentSpecialty.has_contract" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="hasContract()" (click)="hasContract.set(!hasContract())"><span class="toggle-slider"></span></div>
       </div>
 
       <div class="form-section-title">Опис програми</div>
@@ -1191,11 +1183,7 @@
           <div class="toggle-label">Активна</div>
           <div class="toggle-desc">Відображається на сайті</div>
         </div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentSpecialty.is_active" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="specialtyActive()" (click)="specialtyActive.set(!specialtyActive())"><span class="toggle-slider"></span></div>
       </div>
       <div class="form-group">
         <label class="form-label">Порядок сортування</label>
@@ -1212,11 +1200,11 @@
       <button
         class="btn btn-primary"
         style="flex: 1"
-        [disabled]="saving"
+        [disabled]="saving() || drawerLoading()"
         (click)="saveAndClose('specialty')"
       >
-        <span class="spinner-sm" *ngIf="saving"></span>
-        {{ saving ? '' : editingItem ? 'Зберегти зміни' : 'Зберегти спеціальність' }}
+        @if (saving() || drawerLoading()) { <span class="spinner-sm"></span> }
+        {{ drawerLoading() ? 'Завантаження...' : saving() ? 'Збереження...' : editingItem ? 'Зберегти зміни' : 'Зберегти спеціальність' }}
       </button>
       <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
     </div>
@@ -1226,7 +1214,7 @@
 <!-- ═══ DRAWER — INSTITUTE ═══ -->
 <div
   class="drawer-overlay"
-  [class.active]="openedDrawer === 'institute'"
+  [class.active]="openedDrawer() === 'institute'"
   (click)="$event.target === $event.currentTarget && closeDrawer()"
 >
   <div class="drawer">
@@ -1316,11 +1304,7 @@
           <div class="toggle-label">Активний</div>
           <div class="toggle-desc">Відображається на сайті</div>
         </div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentInstitute.is_active" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="instituteActive()" (click)="instituteActive.set(!instituteActive())"><span class="toggle-slider"></span></div>
       </div>
       <div class="form-group">
         <label class="form-label">Порядок сортування</label>
@@ -1331,11 +1315,11 @@
       <button
         class="btn btn-primary"
         style="flex: 1"
-        [disabled]="saving"
+        [disabled]="saving()"
         (click)="saveAndClose('institute')"
       >
-        <span class="spinner-sm" *ngIf="saving"></span>
-        {{ saving ? '' : 'Зберегти' }}
+        @if (saving()) { <span class="spinner-sm"></span> }
+        {{ saving() ? 'Збереження...' : editingItem ? 'Зберегти зміни' : 'Зберегти інститут' }}
       </button>
       <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
     </div>
@@ -1345,7 +1329,7 @@
 <!-- ═══ DRAWER — COMPANY ═══ -->
 <div
   class="drawer-overlay"
-  [class.active]="openedDrawer === 'company'"
+  [class.active]="openedDrawer() === 'company'"
   (click)="$event.target === $event.currentTarget && closeDrawer()"
 >
   <div class="drawer">
@@ -1412,11 +1396,7 @@
       <div class="form-section-title">Відображення</div>
       <div class="toggle-row">
         <div><div class="toggle-label">Активна</div></div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentCompany.is_active" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="companyActive()" (click)="companyActive.set(!companyActive())"><span class="toggle-slider"></span></div>
       </div>
       <div class="form-group">
         <label class="form-label">Порядок сортування</label>
@@ -1427,11 +1407,11 @@
       <button
         class="btn btn-primary"
         style="flex: 1"
-        [disabled]="saving"
+        [disabled]="saving()"
         (click)="saveAndClose('company')"
       >
-        <span class="spinner-sm" *ngIf="saving"></span>
-        {{ saving ? '' : 'Зберегти компанію' }}
+        @if (saving()) { <span class="spinner-sm"></span> }
+        {{ saving() ? 'Збереження...' : editingItem ? 'Зберегти зміни' : 'Зберегти компанію' }}
       </button>
       <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
     </div>
@@ -1441,7 +1421,7 @@
 <!-- ═══ DRAWER — KNOWLEDGE ═══ -->
 <div
   class="drawer-overlay"
-  [class.active]="openedDrawer === 'knowledge'"
+  [class.active]="openedDrawer() === 'knowledge'"
   (click)="$event.target === $event.currentTarget && closeDrawer()"
 >
   <div class="drawer">
@@ -1496,22 +1476,18 @@
       </div>
       <div class="toggle-row">
         <div><div class="toggle-label">Активна</div></div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentKnowledge.is_active" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="knowledgeActive()" (click)="knowledgeActive.set(!knowledgeActive())"><span class="toggle-slider"></span></div>
       </div>
     </div>
     <div class="drawer-footer">
       <button
         class="btn btn-primary"
         style="flex: 1"
-        [disabled]="saving"
+        [disabled]="saving()"
         (click)="saveAndClose('knowledge')"
       >
-        <span class="spinner-sm" *ngIf="saving"></span>
-        {{ saving ? '' : 'Зберегти' }}
+        @if (saving()) { <span class="spinner-sm"></span> }
+        {{ saving() ? 'Збереження...' : editingItem ? 'Зберегти зміни' : 'Зберегти галузь' }}
       </button>
       <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
     </div>
@@ -1521,7 +1497,7 @@
 <!-- ═══ DRAWER — MEDIA ═══ -->
 <div
   class="drawer-overlay"
-  [class.active]="openedDrawer === 'media'"
+  [class.active]="openedDrawer() === 'media'"
   (click)="$event.target === $event.currentTarget && closeDrawer()"
 >
   <div class="drawer">
@@ -1599,22 +1575,18 @@
           <div class="toggle-label">Активне</div>
           <div class="toggle-desc">Відображається на сайті</div>
         </div>
-        <label class="toggle"
-          ><input type="checkbox" [(ngModel)]="currentMedia.is_active" /><span
-            class="toggle-slider"
-          ></span
-        ></label>
+        <div class="toggle" [class.on]="mediaActive()" (click)="mediaActive.set(!mediaActive())"><span class="toggle-slider"></span></div>
       </div>
     </div>
     <div class="drawer-footer">
       <button
         class="btn btn-primary"
         style="flex: 1"
-        [disabled]="saving"
+        [disabled]="saving()"
         (click)="saveAndClose('media')"
       >
-        <span class="spinner-sm" *ngIf="saving"></span>
-        {{ saving ? '' : editingItem ? 'Зберегти зміни' : 'Зберегти медіа' }}
+        @if (saving()) { <span class="spinner-sm"></span> }
+        {{ saving() ? 'Збереження...' : editingItem ? 'Зберегти зміни' : 'Зберегти медіа' }}
       </button>
       <button class="btn btn-outline" (click)="closeDrawer()">Скасувати</button>
     </div>

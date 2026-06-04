@@ -222,13 +222,37 @@ body {
   white-space: nowrap;
 }
 .btn-primary {
+  max-width: fit-content;
   background: var(--green-dark);
   color: white;
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background: var(--green-mid);
   transform: translateY(-1px);
   box-shadow: 0 4px 16px rgba(26, 74, 46, 0.3);
+}
+.btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.spinner-sm {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.65s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 .btn-gold {
   background: var(--gold);
@@ -248,7 +272,9 @@ body {
   background: var(--cream);
 }
 .btn-danger {
-  background: var(--red);
+  max-width: fit-content;
+  width: fit-content;
+  background: #c73326;
   color: white;
 }
 .btn-danger:hover {
@@ -642,23 +668,21 @@ select.form-control {
 }
 .toggle {
   position: relative;
-  width: 42px;
+  display: inline-block;
+  width: 44px;
   height: 24px;
   flex-shrink: 0;
-}
-.toggle input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-  position: absolute;
+  cursor: pointer;
+  border-radius: 12px;
+  user-select: none;
 }
 .toggle-slider {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 12px;
-  cursor: pointer;
-  transition: var(--transition);
+  transition: background 0.25s ease;
+  pointer-events: none;
 }
 .toggle-slider::before {
   content: '';
@@ -669,14 +693,14 @@ select.form-control {
   height: 18px;
   background: white;
   border-radius: 50%;
-  transition: var(--transition);
+  transition: transform 0.25s ease;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
-.toggle input:checked + .toggle-slider {
+.toggle.on .toggle-slider {
   background: var(--green-mid);
 }
-.toggle input:checked + .toggle-slider::before {
-  transform: translateX(18px);
+.toggle.on .toggle-slider::before {
+  transform: translateX(20px);
 }
 
 /* ── DISCIPLINES TAGS EDITOR ── */
