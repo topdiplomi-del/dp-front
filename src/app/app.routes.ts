@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './features/admin/pages/admin-page/auth.guard';
 
 export const routes: Routes = [
-  // ─── Public ────────────────────────────────────────────────────────────────
+
   {
     path: '',
     loadComponent: () =>
@@ -23,7 +23,7 @@ export const routes: Routes = [
       ),
   },
 
-  // ─── Admin ─────────────────────────────────────────────────────────────────
+
   {
     path: 'admin/login',
     loadComponent: () => import('./features/admin/pages/login/login.page').then((m) => m.LoginPage),
@@ -34,8 +34,6 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/admin/pages/admin-page/admin-page').then((m) => m.AdminPage),
   },
-
-  // ─── Fallback ──────────────────────────────────────────────────────────────
   {
     path: '**',
     redirectTo: '',

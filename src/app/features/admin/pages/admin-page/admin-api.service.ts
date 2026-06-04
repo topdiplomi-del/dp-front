@@ -43,9 +43,6 @@ export class AdminApiService {
     return new HttpHeaders(token ? { Authorization: `Bearer ${token}` } : {});
   }
 
-  // ─────────────────────────────
-  // INSTITUTES
-  // ─────────────────────────────
 
   getInstitutes(): Observable<any[]> {
     return this.http

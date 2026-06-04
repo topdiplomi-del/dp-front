@@ -34,19 +34,16 @@ export class InstitutesComponent implements OnInit {
       next: (response: any) => {
         console.log('API RESPONSE:', response);
 
-        // якщо API повертає масив
         let institutesArray: Institute[] = [];
 
         if (Array.isArray(response)) {
           institutesArray = response;
         }
 
-        // якщо API повертає { data: [...] }
         else if (Array.isArray(response.data)) {
           institutesArray = response.data;
         }
 
-        // якщо API повертає { institutes: [...] }
         else if (Array.isArray(response.institutes)) {
           institutesArray = response.institutes;
         }
