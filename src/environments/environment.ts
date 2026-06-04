@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'ontu-prof-serv-production.up.railway.app',
+  apiUrl: 'http://localhost:5000',
 };
