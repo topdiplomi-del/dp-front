@@ -162,8 +162,6 @@ export class DepartmentPage implements OnInit, OnDestroy {
     }
   }
 
-  // ─── Data loading ──────────────────────────────────────────────────────────
-
   loadAll(): void {
     this.loading = true;
     this.error = null;
@@ -241,10 +239,8 @@ export class DepartmentPage implements OnInit, OnDestroy {
         [],
       ),
     );
-    console.log('st');
     forkJoin(requests).subscribe({
       next: (results) => {
-        console.log('result');
         this.specialties = results
           .flatMap((items) => this.normalizeArray<Specialty>(items))
           .filter((item) => item?.is_active)
@@ -253,6 +249,7 @@ export class DepartmentPage implements OnInit, OnDestroy {
         this.buildTree();
 
         this.specialtiesLoading = false;
+        this.cdr.detectChanges();
       },
 
       error: () => {
@@ -260,6 +257,7 @@ export class DepartmentPage implements OnInit, OnDestroy {
         this.treeData = [];
 
         this.specialtiesLoading = false;
+        this.cdr.detectChanges();
       },
     });
   }

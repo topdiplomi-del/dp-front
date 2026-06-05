@@ -1,7 +1,7 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { catchError, of } from 'rxjs';
 import { HeaderComponent } from '../../../../layout/header/header.component';
 import { FooterComponent } from '../../../../layout/footer/footer.component';
@@ -79,6 +79,7 @@ export class SpecialityPage implements OnInit {
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
     private http: HttpClient,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   // ─── State ─────────────────────────────────────────────────────────────────
@@ -147,18 +148,16 @@ export class SpecialityPage implements OnInit {
         if (!response) {
           this.error = true;
           this.loading = false;
+          this.cdr.detectChanges();
           return;
         }
 
-        // Public API wraps data in { success, data }
         const data: Specialty = response.data ?? response;
         this.specialty = data;
-
-        // Load companies linked to the same institute via knowledge_field
-        // We use the public companies endpoint filtered by institute if needed
         this.loadCompanies(data.knowledge_field_id);
 
         this.loading = false;
+        this.cdr.detectChanges();
         this.initScrollProgress();
       });
   }
@@ -172,6 +171,7 @@ export class SpecialityPage implements OnInit {
       .pipe(catchError(() => of([])))
       .subscribe((res) => {
         this.companies = (res.data ?? res) as Company[];
+        this.cdr.detectChanges();
       });
   }
 
