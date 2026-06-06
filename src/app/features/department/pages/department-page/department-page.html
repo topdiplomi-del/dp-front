@@ -106,7 +106,7 @@
                 class="program-btn"
                 *ngFor="let s of node.specialties; trackBy: trackById"
                 [class.active]="activeSpecialty?.id === s.id"
-                href="/speciality/{{ s.id }}"
+                href="/speciality/{{ s.id }}?from={{ instituteId }}&fromName={{ institute.short_name ?? institute.name }}"
               >
                 <div class="program-btn-left">
                   <div class="program-degree">{{ degreeLabel(s.degree) }}</div>

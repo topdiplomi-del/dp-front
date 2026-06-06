@@ -1,30 +1,141 @@
 <header class="header">
   <div class="container">
+
+    <!-- ── Main row ── -->
     <div class="header__wrapper">
-      <a class="header-logo" href="#">
+
+      <a class="header-logo" href="/">
         <div class="logo-text">
           <span class="logo-title">Сайт проф. інституту</span>
           <span class="logo-subtitle">Одеса, 2026</span>
         </div>
       </a>
 
-      <div class="header-search">
-        <svg
-          class="search-icon"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.35-4.35" />
-        </svg>
-        <input type="text" placeholder="Пошук спеціальностей..." />
+      <!-- Desktop search with dropdown -->
+      <div class="search-wrap desktop-search">
+        <div class="header-search">
+          <svg class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Пошук інститутів, спеціальностей..."
+            [value]="searchQuery"
+            (input)="onSearch($any($event.target).value)"
+            (focus)="onFocus()"
+            (blur)="onBlur()"
+            (keydown.escape)="clear()"
+          />
+          <button class="search-clear" *ngIf="searchQuery" (mousedown)="clear()" aria-label="Очистити">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Dropdown -->
+        <div class="search-dropdown" *ngIf="showDropdown">
+          <div class="search-spinner" *ngIf="searching">
+            <span class="spinner-dot"></span><span class="spinner-dot"></span><span class="spinner-dot"></span>
+          </div>
+          <ng-container *ngIf="!searching">
+            <div class="search-empty" *ngIf="results.length === 0">Нічого не знайдено</div>
+            <button
+              class="search-item"
+              *ngFor="let r of results"
+              (mousedown)="navigate(r)"
+            >
+              <span class="search-badge" [class.badge-inst]="r.type === 'institute'" [class.badge-spec]="r.type === 'specialty'">
+                {{ r.type === 'institute' ? 'Інститут' : 'Спец.' }}
+              </span>
+              <span class="search-item-body">
+                <span class="search-item-title">{{ r.title }}</span>
+                <span class="search-item-sub" *ngIf="r.subtitle">{{ r.subtitle }}</span>
+              </span>
+              <svg class="search-item-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </ng-container>
+        </div>
       </div>
 
-      <a href="https://ontu.edu.ua/openday" target="_blank" class="header-badge"
-        >Дні відкритих дверей</a
-      >
+      <!-- Right side -->
+      <div class="header-right">
+        <a href="https://ontu.edu.ua/openday" target="_blank" class="header-badge">
+          Дні відкритих дверей
+        </a>
+        <button
+          class="search-toggle"
+          (click)="toggleSearch()"
+          [class.active]="searchOpen"
+          aria-label="Пошук"
+        >
+          <svg *ngIf="!searchOpen" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <svg *ngIf="searchOpen" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+            <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
     </div>
+
+    <!-- ── Mobile search row ── -->
+    <div class="mobile-search-row" *ngIf="searchOpen">
+      <div class="search-wrap" style="width: 100%">
+        <div class="header-search">
+          <svg class="search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21-4.35-4.35" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Пошук інститутів, спеціальностей..."
+            autofocus
+            [value]="searchQuery"
+            (input)="onSearch($any($event.target).value)"
+            (focus)="onFocus()"
+            (blur)="onBlur()"
+            (keydown.escape)="toggleSearch()"
+          />
+          <button class="search-clear" *ngIf="searchQuery" (mousedown)="clear()" aria-label="Очистити">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path d="M18 6 6 18M6 6l12 12" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile dropdown -->
+        <div class="search-dropdown" *ngIf="showDropdown">
+          <div class="search-spinner" *ngIf="searching">
+            <span class="spinner-dot"></span><span class="spinner-dot"></span><span class="spinner-dot"></span>
+          </div>
+          <ng-container *ngIf="!searching">
+            <div class="search-empty" *ngIf="results.length === 0">Нічого не знайдено</div>
+            <button
+              class="search-item"
+              *ngFor="let r of results"
+              (mousedown)="navigate(r)"
+            >
+              <span class="search-badge" [class.badge-inst]="r.type === 'institute'" [class.badge-spec]="r.type === 'specialty'">
+                {{ r.type === 'institute' ? 'Інститут' : 'Спец.' }}
+              </span>
+              <span class="search-item-body">
+                <span class="search-item-title">{{ r.title }}</span>
+                <span class="search-item-sub" *ngIf="r.subtitle">{{ r.subtitle }}</span>
+              </span>
+              <svg class="search-item-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
   </div>
 </header>

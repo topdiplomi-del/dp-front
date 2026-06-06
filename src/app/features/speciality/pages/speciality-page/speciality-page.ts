@@ -2,7 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { catchError, of } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 import { HeaderComponent } from '../../../../layout/header/header.component';
 import { FooterComponent } from '../../../../layout/footer/footer.component';
 import { environment } from '../../../../../environments/environment';
@@ -89,6 +89,8 @@ export class SpecialityPage implements OnInit {
   loading = true;
   error = false;
   scrollProgress = 0;
+  departmentId: string | null = null;
+  departmentName: string | null = null;
 
   // ─── Computed ──────────────────────────────────────────────────────────────
 
@@ -133,6 +135,9 @@ export class SpecialityPage implements OnInit {
   // ─── Init ──────────────────────────────────────────────────────────────────
 
   ngOnInit(): void {
+    this.departmentId = this.route.snapshot.queryParamMap.get('from');
+    this.departmentName = this.route.snapshot.queryParamMap.get('fromName');
+
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) {
       this.error = true;
@@ -163,14 +168,21 @@ export class SpecialityPage implements OnInit {
   }
 
   private loadCompanies(knowledgeFieldId: string): void {
-    // Fetch all companies; filter client-side if needed
-    // The server returns companies by institute_id, but here we load all
-    // and let the template show them (the HTML mock had 6 hardcoded ones)
     this.http
-      .get<any>(`${environment.apiUrl}/api/companies`)
-      .pipe(catchError(() => of([])))
+      .get<any>(`${environment.apiUrl}/api/knowledge-fields/${knowledgeFieldId}`)
+      .pipe(
+        switchMap((res) => {
+          const field = res?.data ?? res;
+          const instituteId: string = field?.institute_id;
+          if (!instituteId) return of([]);
+          return this.http.get<any>(
+            `${environment.apiUrl}/api/companies?institute_id=${instituteId}`,
+          );
+        }),
+        catchError(() => of([])),
+      )
       .subscribe((res) => {
-        this.companies = (res.data ?? res) as Company[];
+        this.companies = (res?.data ?? res) as Company[];
         this.cdr.detectChanges();
       });
   }

@@ -33,6 +33,10 @@
   <div class="container">
     <div class="breadcrumb">
       <a class="bc-item" href="/">Головна</a>
+      <ng-container *ngIf="departmentId">
+        <span class="bc-sep">›</span>
+        <a class="bc-item" [href]="'/department/' + departmentId">{{ departmentName ?? 'Інститут' }}</a>
+      </ng-container>
       <span class="bc-sep">›</span>
       <span class="bc-item bc-field">
         {{ specialty.knowledge_field_code }} {{ specialty.knowledge_field_name }}
